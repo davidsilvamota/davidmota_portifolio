@@ -11,7 +11,7 @@ export default function ContainerScreenModel(props: { children: JSX.Element }) {
         bg={"black"}
         justifyContent={"center"}
       >
-        <Flex minH={"100vh"} p={8} w={"96%"} bgGradient={colors.bgLinear}>
+        <Flex minH={"100vh"} p={8} w={"96%"} bgGradient={colors.bgGradient}>
           {props.children}
         </Flex>
       </Flex>
