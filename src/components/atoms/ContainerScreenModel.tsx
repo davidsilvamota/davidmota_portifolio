@@ -1,6 +1,8 @@
 import { Flex } from "@chakra-ui/react";
+import { colors } from "../theme/Theme";
+import { jsx } from "@emotion/react";
 
-export default function ContainerScreenModel({ children }: any) {
+export default function ContainerScreenModel(props: { children: JSX.Element }) {
   return (
     <>
       <Flex
@@ -9,13 +11,8 @@ export default function ContainerScreenModel({ children }: any) {
         bg={"black"}
         justifyContent={"center"}
       >
-        <Flex
-          minH={"100vh"}
-          p={8}
-          w={"96%"}
-          bgGradient="linear(to-r, #0D0D0D,#262626, #0D0D0D)"
-        >
-          {children}
+        <Flex minH={"100vh"} p={8} w={"96%"} bgGradient={colors.bgLinear}>
+          {props.children}
         </Flex>
       </Flex>
     </>
