@@ -1,4 +1,5 @@
 import { ResponsiveValue, Text } from "@chakra-ui/react";
+import { colors } from "../theme/Theme";
 type TextGradientModelProps = {
   children: string;
   fontWeight?:
@@ -56,7 +57,7 @@ type TextGradientModelProps = {
 export default function TextGradientModel(props: TextGradientModelProps) {
   return (
     <Text
-      bgGradient="linear(to-r, #865EEC, #35CFFE,#AA7CAC)"
+      bgGradient={colors.textGradient}
       bgClip="text"
       fontSize={props.fontSize}
       fontWeight={props.fontWeight || "semibold"}
