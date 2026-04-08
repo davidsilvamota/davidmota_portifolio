@@ -9,11 +9,7 @@ export function ProfileAvatarModel(props: ProfileAvatarModelProps) {
   return (
     <Flex p={1} borderRadius={"50%"} bgGradient={colors.textGradient}>
       <Flex w={props.size} h={props.size}>
-        <Avatar
-          size="full"
-          name="Segun Adebayo"
-          src={props.src}
-        />
+        <Avatar size="full" name="David Mota" src={props.src} />
       </Flex>
     </Flex>
   );

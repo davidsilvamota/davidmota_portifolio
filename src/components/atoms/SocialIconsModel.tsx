@@ -1,20 +1,40 @@
-import { Link, Image } from "@chakra-ui/react";
+import { Flex, Image, Link, type ResponsiveValue } from "@chakra-ui/react";
+
+export type SocialIconItem = {
+  icon: string;
+  label: string;
+  href?: string;
+};
 
 export function SocialIconsModel(props: {
-  icons: { icon: string; linkTo?: string }[];
+  icons: SocialIconItem[];
+  direction?: ResponsiveValue<"row" | "column">;
 }) {
+  const dir = props.direction ?? "column";
   return (
-    <>
-      {props.icons.map((item) => (
-        <Link mb={4} mt={4} href={item.linkTo} isExternal>
+    <Flex
+      direction={dir}
+      align="center"
+      justify="center"
+      gap={{ base: 4, xl: 6 }}
+    >
+      {props.icons.map((item) => {
+        const image = (
           <Image
             boxSize="50px"
             objectFit="cover"
             src={item.icon}
-            alt="Dan Abramov"
+            alt={item.label}
           />
-        </Link>
-      ))}
-    </>
+        );
+        return item.href ? (
+          <Link key={item.label} href={item.href} isExternal>
+            {image}
+          </Link>
+        ) : (
+          <span key={item.label}>{image}</span>
+        );
+      })}
+    </Flex>
   );
 }

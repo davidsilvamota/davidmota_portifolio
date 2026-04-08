@@ -1,5 +1,6 @@
 import { ColorModeScript } from "@chakra-ui/react"
 import * as React from "react"
+import "./global.css"
 import * as ReactDOM from "react-dom/client"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
