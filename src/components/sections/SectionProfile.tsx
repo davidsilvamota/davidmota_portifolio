@@ -10,7 +10,7 @@ import iconLinkedin from "../../assets/icons/linkedin.png";
 export default function SectionProfile() {
   return (
     <Flex w={"100%"} alignItems={"center"} justifyContent={"space-between"}>
-      <ProfileAvatarModel size={300} />
+      <ProfileAvatarModel src="https://media-gru1-2.cdn.whatsapp.net/v/t61.24694-24/609426331_1267261424734135_4662029117884972343_n.jpg?ccb=11-4&oh=01_Q5Aa4QEipMLIfTsz6nMJj9bMfIdFcWvrsSN6TpzEExIy3Msw7w&oe=69E3B92E&_nc_sid=5e03e0&_nc_cat=103" size={300} />
       <Flex w={"50%"} mr={10} ml={10} flexDir={"column"}>
         <TextGradientModel fontSize={"7xl"}>David Mota</TextGradientModel>
         <TextGradientModel fontSize={"20px"} fontWeight={"normal"}>
