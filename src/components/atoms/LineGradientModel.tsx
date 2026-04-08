@@ -11,8 +11,8 @@ export function LineGradientModel(props: LineGradientModelProps) {
       bgGradient={`linear(to-${
         props.type === "vertical" ? "t" : "r"
       }, #865EEC, #35CFFE,#AA7CAC)`}
-      h={props.type == "vertical" ? props.size : 1}
-      w={props.type == "horizontal" ? props.size : 1}
+      h={props.type === "vertical" ? props.size : 1}
+      w={props.type === "horizontal" ? props.size : 1}
     ></Flex>
   );
 }

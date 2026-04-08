@@ -2,6 +2,7 @@ import * as React from "react";
 import { ChakraProvider, Flex, theme } from "@chakra-ui/react";
 import ContainerScreenModel from "./components/atoms/ContainerScreenModel";
 import SectionProfile from "./components/sections/SectionProfile";
+import SectionGitHubContributions from "./components/sections/SectionGitHubContributions";
 import SectionHowIWork from "./components/sections/SectionHowIWork";
 import SectionProjects from "./components/sections/SectionProjects";
 
@@ -16,6 +17,7 @@ export const App = () => (
         w="100%"
       >
         <SectionProfile />
+        <SectionGitHubContributions />
         <SectionHowIWork />
         <SectionProjects />
       </Flex>

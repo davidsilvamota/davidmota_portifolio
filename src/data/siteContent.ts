@@ -2,6 +2,12 @@ import iconGithub from "../assets/icons/github.png";
 import iconWhatsapp from "../assets/icons/whatsapp.png";
 import iconLinkedin from "../assets/icons/linkedin.png";
 
+/** Login do GitHub (sem @). Sobrescrito por REACT_APP_GITHUB_USERNAME no .env se definido. */
+const githubLogin = "davidsilvamota";
+
+export const githubUsername = 
+  process.env.REACT_APP_GITHUB_USERNAME?.trim() || githubLogin;
+
 export const howIWorkItems = [
   "Entendo o problema e referências antes de definir interface ou código.",
   "Cuido de layout, hierarquia visual e consistência — também faço web design.",
