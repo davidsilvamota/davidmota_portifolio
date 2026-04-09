@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -23,10 +22,11 @@ const CONTRIBUTIONS_API =
   "https://github-contributions-api.jogruber.de/v4/" as const;
 
 const gitHubTheme = {
-  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+  light: ["#2d333b", "#0e4429", "#006d32", "#26a641", "#39d353"],
 } satisfies ThemeInput;
 
 type ApiOk = {
+  total: Record<string, number>;
   contributions: Activity[];
 };
 
@@ -45,16 +45,30 @@ function isApiErr(body: unknown): body is ApiErr {
 
 export default function SectionGitHubContributions() {
   const username = githubUsername.trim();
-  const [data, setData] = React.useState<Activity[] | null>(null);
-  const [total, setTotal] = React.useState(0);
+  const [allData, setAllData] = React.useState<Activity[] | null>(null);
+  const [availableYears, setAvailableYears] = React.useState<number[]>([]);
+  const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const hasData = Boolean(data && data.length > 0);
+
+  const data = React.useMemo(() => {
+    if (!allData || !selectedYear) return [];
+    const yearPrefix = `${selectedYear}-`;
+    return allData.filter((d) => d.date.startsWith(yearPrefix));
+  }, [allData, selectedYear]);
+
+  const total = React.useMemo(
+    () => data.reduce((sum, d) => sum + d.count, 0),
+    [data],
+  );
+
+  const hasData = data.length > 0;
 
   React.useEffect(() => {
     if (!username) {
-      setData(null);
-      setTotal(0);
+      setAllData(null);
+      setAvailableYears([]);
+      setSelectedYear(null);
       return;
     }
 
@@ -62,10 +76,9 @@ export default function SectionGitHubContributions() {
     setLoading(true);
     setError(null);
 
-    fetch(
-      `${CONTRIBUTIONS_API}${encodeURIComponent(username)}?y=last`,
-      { signal: ac.signal },
-    )
+    fetch(`${CONTRIBUTIONS_API}${encodeURIComponent(username)}?y=all`, {
+      signal: ac.signal,
+    })
       .then(async (res) => {
         const body: unknown = await res.json();
         if (!res.ok) {
@@ -79,14 +92,24 @@ export default function SectionGitHubContributions() {
         if (!Array.isArray(list)) {
           throw new Error("Resposta inválida da API.");
         }
-        setData(list);
-        setTotal(list.reduce((sum, d) => sum + d.count, 0));
+        const yearList = Object.keys((body as ApiOk).total || {})
+          .map((year) => Number(year))
+          .filter((year) => Number.isInteger(year))
+          .sort((a, b) => b - a);
+
+        setAllData(list);
+        setAvailableYears(yearList);
+        setSelectedYear((current) => {
+          if (current && yearList.includes(current)) return current;
+          return yearList[0] ?? null;
+        });
       })
       .catch((e: unknown) => {
         if (e instanceof Error && e.name === "AbortError") return;
         setError(e instanceof Error ? e.message : "Erro desconhecido.");
-        setData(null);
-        setTotal(0);
+        setAllData(null);
+        setAvailableYears([]);
+        setSelectedYear(null);
       })
       .finally(() => {
         if (!ac.signal.aborted) setLoading(false);
@@ -138,13 +161,14 @@ export default function SectionGitHubContributions() {
       py={{ base: 4, md: 6 }}
     >
       <Box
-        bg="white"
-        color="gray.800"
+        bg="whiteAlpha.50"
+        color="whiteAlpha.900"
         borderWidth="1px"
-        borderColor="gray.200"
+        borderColor="whiteAlpha.200"
         borderRadius="md"
         p={{ base: 3, md: 4 }}
-        boxShadow="sm"
+        backdropFilter="auto"
+        backdropBlur="6px"
       >
         <Flex
           align={{ base: "flex-start", sm: "center" }}
@@ -153,41 +177,44 @@ export default function SectionGitHubContributions() {
           flexDir={{ base: "column", sm: "row" }}
           mb={4}
         >
-          <Text fontSize="md" fontWeight="semibold" color="gray.700">
+          <Text fontSize="md" fontWeight="semibold" color="whiteAlpha.900">
             {loading
               ? "Carregando contribuições…"
               : error
                 ? "Não foi possível carregar"
-                : `${total.toLocaleString("pt-BR")} contribuições no último ano`}
+                : selectedYear
+                  ? `${total.toLocaleString("pt-BR")} contribuições em ${selectedYear}`
+                  : "Sem ano disponível"}
           </Text>
           <Menu placement="bottom-end">
             <MenuButton
               as={Button}
               size="sm"
-              variant="ghost"
-              colorScheme="gray"
+              variant="outline"
+              borderColor="whiteAlpha.400"
+              color="white"
+              _hover={{ bg: "whiteAlpha.100" }}
               fontWeight="normal"
               rightIcon={<span aria-hidden>▾</span>}
             >
-              Configurações de contribuição
+              Ano: {selectedYear ?? "--"}
             </MenuButton>
-            <MenuList fontSize="sm">
-              <MenuItem
-                as="a"
-                href={`https://github.com/${encodeURIComponent(username)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ver perfil no GitHub
-              </MenuItem>
-              <MenuItem
-                as="a"
-                href="https://docs.github.com/account-and-profile/how-github-counts-your-contributions"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Como o GitHub conta contribuições
-              </MenuItem>
+            <MenuList
+              fontSize="sm"
+              bg="gray.800"
+              borderColor="whiteAlpha.300"
+              color="whiteAlpha.900"
+            >
+              {availableYears.map((year) => (
+                <MenuItem
+                  key={year}
+                  onClick={() => setSelectedYear(year)}
+                  bg={selectedYear === year ? "whiteAlpha.200" : "transparent"}
+                  _hover={{ bg: "whiteAlpha.200" }}
+                >
+                  {year}
+                </MenuItem>
+              ))}
             </MenuList>
           </Menu>
         </Flex>
@@ -203,7 +230,7 @@ export default function SectionGitHubContributions() {
                 <Spinner color="green.500" />
               </Flex>
             ) : !hasData ? (
-              <Text color="gray.600" fontSize="sm">
+              <Text color="whiteAlpha.800" fontSize="sm">
                 Sem dados de contribuições para exibir no período.
               </Text>
             ) : (
@@ -242,26 +269,6 @@ export default function SectionGitHubContributions() {
           </Box>
         )}
 
-        <Flex
-          mt={4}
-          pt={3}
-          borderTopWidth="1px"
-          borderColor="gray.100"
-          align="center"
-          justify="space-between"
-          flexWrap="wrap"
-          gap={2}
-        >
-          <Link
-            href="https://docs.github.com/account-and-profile/how-github-counts-your-contributions"
-            isExternal
-            fontSize="xs"
-            color="gray.500"
-            _hover={{ color: "gray.700" }}
-          >
-            Saiba como as contribuições são contadas
-          </Link>
-        </Flex>
       </Box>
     </Box>
   );

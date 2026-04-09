@@ -1,14 +1,47 @@
 import { Flex, Text } from "@chakra-ui/react";
+import * as React from "react";
 import { ProfileAvatarModel } from "../atoms/ProfileAvatarModel";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { SocialIconsModel } from "../atoms/SocialIconsModel";
-import { socialLinks } from "../../data/siteContent";
+import { githubUsername, socialLinks } from "../../data/siteContent";
 
-const avatarSrc =
-  "https://media-gru1-2.cdn.whatsapp.net/v/t61.24694-24/609426331_1267261424734135_4662029117884972343_n.jpg?ccb=11-4&oh=01_Q5Aa4QEipMLIfTsz6nMJj9bMfIdFcWvrsSN6TpzEExIy3Msw7w&oe=69E3B92E&_nc_sid=5e03e0&_nc_cat=103";
+const getFallbackAvatar = (username: string) =>
+  username ? `https://github.com/${encodeURIComponent(username)}.png` : "";
+const GITHUB_USERS_API = "https://api.github.com/users/" as const;
 
 export default function SectionProfile() {
+  const username = githubUsername.trim();
+  const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
+  const [displayName, setDisplayName] = React.useState("David Mota");
+
+  React.useEffect(() => {
+    const fallbackAvatarSrc = getFallbackAvatar(username);
+    const fallbackName = username || "David Mota";
+    if (!username) {
+      setAvatarSrc(fallbackAvatarSrc);
+      setDisplayName("David Mota");
+      return;
+    }
+    const ac = new AbortController();
+    fetch(`${GITHUB_USERS_API}${encodeURIComponent(username)}`, {
+      signal: ac.signal,
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Falha ao carregar avatar do GitHub.");
+        const body = (await res.json()) as { avatar_url?: string; name?: string };
+        setAvatarSrc(body.avatar_url || fallbackAvatarSrc);
+        setDisplayName(body.name?.trim() || fallbackName);
+      })
+      .catch(() => {
+        if (!ac.signal.aborted) {
+          setAvatarSrc(fallbackAvatarSrc);
+          setDisplayName(fallbackName);
+        }
+      });
+    return () => ac.abort();
+  }, [username]);
+
   return (
     <Flex
       as="section"
@@ -30,7 +63,7 @@ export default function SectionProfile() {
         flexDir="column"
         textAlign={{ base: "center", xl: "left" }}
       >
-        <TextGradientModel fontSize={"7xl"}>David Mota</TextGradientModel>
+        <TextGradientModel fontSize={"7xl"}>{displayName}</TextGradientModel>
         <TextGradientModel fontSize={"20px"} fontWeight={"normal"}>
           Desenvolvedor front-end · Web design · Foco em UX
         </TextGradientModel>
