@@ -1,10 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import * as React from "react";
 import { ProfileAvatarModel } from "../atoms/ProfileAvatarModel";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { SocialIconsModel } from "../atoms/SocialIconsModel";
 import { githubUsername, socialLinks } from "../../data/siteContent";
+import { useAccentGradient } from "../theme/AccentGradientContext";
 
 const getFallbackAvatar = (username: string) =>
   username ? `https://github.com/${encodeURIComponent(username)}.png` : "";
@@ -14,6 +15,7 @@ export default function SectionProfile() {
   const username = githubUsername.trim();
   const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
   const [displayName, setDisplayName] = React.useState("David Mota");
+  const { options, selectedId, setSelectedId } = useAccentGradient();
 
   React.useEffect(() => {
     const fallbackAvatarSrc = getFallbackAvatar(username);
@@ -55,7 +57,41 @@ export default function SectionProfile() {
       gap={{ base: 10, xl: 6 }}
       py={{ base: 6, md: 8 }}
     >
-      <ProfileAvatarModel src={avatarSrc} size={300} />
+      <Flex alignItems="center" flexDir="column" gap={4}>
+        <ProfileAvatarModel src={avatarSrc} size={300} />
+        <Flex
+          w="100%"
+          justifyContent="center"
+          alignItems="center"
+          gap={2}
+          flexWrap="wrap"
+        >
+          {options.map((item) => {
+            const gradient = `linear(to-r, ${item.stops.join(", ")})`;
+            const isSelected = selectedId === item.id;
+            return (
+              <Tooltip key={item.id} label={item.name} hasArrow placement="top">
+                <Button
+                  onClick={() => setSelectedId(item.id)}
+                  aria-label={`Selecionar degrade ${item.name}`}
+                  size="xs"
+                  minW="16px"
+                  w="16px"
+                  h="16px"
+                  p={0}
+                  borderRadius="full"
+                  bgGradient={gradient}
+                  borderWidth={isSelected ? "2px" : "1px"}
+                  borderColor={isSelected ? "white" : "whiteAlpha.500"}
+                  _hover={{ opacity: 0.9 }}
+                >
+                  <Box w="100%" h="100%" />
+                </Button>
+              </Tooltip>
+            );
+          })}
+        </Flex>
+      </Flex>
       <Flex
         w={{ base: "100%", xl: "50%" }}
         mr={{ base: 0, xl: 10 }}

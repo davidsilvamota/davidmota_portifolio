@@ -1,5 +1,5 @@
 import { ResponsiveValue, Text } from "@chakra-ui/react";
-import { colors } from "../theme/Theme";
+import { useAccentGradient } from "../theme/AccentGradientContext";
 type TextGradientModelProps = {
   children: string;
   fontWeight?:
@@ -55,9 +55,10 @@ type TextGradientModelProps = {
     | undefined;
 };
 export default function TextGradientModel(props: TextGradientModelProps) {
+  const { textGradient } = useAccentGradient();
   return (
     <Text
-      bgGradient={colors.textGradient}
+      bgGradient={textGradient}
       bgClip="text"
       fontSize={props.fontSize}
       fontWeight={props.fontWeight || "semibold"}
