@@ -1,9 +1,11 @@
 import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { useAccentGradient } from "../theme/AccentGradientContext";
 
 export default function SectionPortfolioBuilderPitch() {
+  const navigate = useNavigate();
   const { selected } = useAccentGradient();
   const accentGradient = `linear(to-r, ${selected.stops.join(", ")})`;
   const cardBg = useColorModeValue("white", "gray.900");
@@ -49,6 +51,7 @@ export default function SectionPortfolioBuilderPitch() {
                 bg={cardBg}
                 color={buttonText}
                 _hover={{ opacity: 0.92 }}
+                onClick={() => navigate("/gerador")}
               >
                 Teste agora
               </Button>

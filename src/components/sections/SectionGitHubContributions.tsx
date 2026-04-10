@@ -21,7 +21,7 @@ import {
   type ThemeInput,
 } from "react-activity-calendar";
 import "../../githubActivityTooltips.css";
-import { githubUsername } from "../../data/siteContent";
+import { usePortfolioGitHubUser } from "../../context/PortfolioGitHubUserContext";
 
 const CONTRIBUTIONS_API =
   "https://github-contributions-api.jogruber.de/v4/" as const;
@@ -70,7 +70,8 @@ export default function SectionGitHubContributions() {
   const emptyHintBorder = useColorModeValue("gray.200", "whiteAlpha.300");
   const githubLogoColor = useColorModeValue("gray.500", "whiteAlpha.700");
 
-  const username = githubUsername.trim();
+  const { portfolioGitHubLogin } = usePortfolioGitHubUser();
+  const username = portfolioGitHubLogin.trim();
   const [allData, setAllData] = React.useState<Activity[] | null>(null);
   const [availableYears, setAvailableYears] = React.useState<number[]>([]);
   const [selectedYear, setSelectedYear] = React.useState<number | null>(2022);
@@ -162,15 +163,15 @@ export default function SectionGitHubContributions() {
           p={6}
         >
           <Text color={textPrimary} fontSize="sm">
-            Para exibir o gráfico de contribuições do GitHub, defina{" "}
-            <Text as="span" fontWeight="semibold">
-              githubUsername
-            </Text>{" "}
-            em{" "}
+            Para exibir o gráfico de contribuições, informe um usuário GitHub em{" "}
             <Text as="span" fontWeight="semibold">
               src/data/siteContent.ts
+            </Text>{" "}
+            ou em{" "}
+            <Text as="span" fontWeight="semibold">
+              REACT_APP_GITHUB_USERNAME
             </Text>
-            .
+            , ou use o gerador de portfólio (botão Teste agora).
           </Text>
         </Box>
       </Box>

@@ -1,32 +1,31 @@
 import * as React from "react";
-import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { appTheme } from "./chakra-theme";
 import ContainerScreenModel from "./components/atoms/ContainerScreenModel";
-import SectionProfile from "./components/sections/SectionProfile";
-import SectionGitHubContributions from "./components/sections/SectionGitHubContributions";
-import SectionPortfolioBuilderPitch from "./components/sections/SectionPortfolioBuilderPitch";
-import SectionHowIWork from "./components/sections/SectionHowIWork";
-import SectionProjects from "./components/sections/SectionProjects";
+import { HomePageContent } from "./components/HomePageContent";
 import { AccentGradientProvider } from "./components/theme/AccentGradientContext";
+import { PortfolioGitHubUserProvider } from "./context/PortfolioGitHubUserContext";
+import PortfolioGeneratorChatPage from "./pages/PortfolioGeneratorChatPage";
 
 export const App = () => (
   <ChakraProvider theme={appTheme}>
-    <AccentGradientProvider>
-      <ContainerScreenModel>
-        <Flex
-          justifyContent="flex-start"
-          flexDir="column"
-          alignItems="center"
-          gap={{ base: 4, md: 8 }}
-          w="100%"
-        >
-          <SectionProfile />
-          <SectionGitHubContributions />
-          <SectionPortfolioBuilderPitch />
-          <SectionHowIWork />
-          <SectionProjects />
-        </Flex>
-      </ContainerScreenModel>
-    </AccentGradientProvider>
+    <BrowserRouter>
+      <AccentGradientProvider>
+        <PortfolioGitHubUserProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ContainerScreenModel>
+                  <HomePageContent />
+                </ContainerScreenModel>
+              }
+            />
+            <Route path="/gerador" element={<PortfolioGeneratorChatPage />} />
+          </Routes>
+        </PortfolioGitHubUserProvider>
+      </AccentGradientProvider>
+    </BrowserRouter>
   </ChakraProvider>
 );

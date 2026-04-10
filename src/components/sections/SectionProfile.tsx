@@ -4,7 +4,8 @@ import { ProfileAvatarModel } from "../atoms/ProfileAvatarModel";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { SocialIconsModel } from "../atoms/SocialIconsModel";
-import { githubUsername, socialLinks } from "../../data/siteContent";
+import { socialLinks } from "../../data/siteContent";
+import { usePortfolioGitHubUser } from "../../context/PortfolioGitHubUserContext";
 import { useAccentGradient } from "../theme/AccentGradientContext";
 
 const getFallbackAvatar = (username: string) =>
@@ -12,7 +13,17 @@ const getFallbackAvatar = (username: string) =>
 const GITHUB_USERS_API = "https://api.github.com/users/" as const;
 
 export default function SectionProfile() {
-  const username = githubUsername.trim();
+  const { portfolioGitHubLogin } = usePortfolioGitHubUser();
+  const username = portfolioGitHubLogin.trim();
+  const iconsForSocial = React.useMemo(
+    () =>
+      socialLinks.map((link) =>
+        link.label === "GitHub" && username
+          ? { ...link, href: `https://github.com/${encodeURIComponent(username)}` }
+          : link,
+      ),
+    [username],
+  );
   const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
   const [displayName, setDisplayName] = React.useState("David Mota");
   const { options, selectedId, setSelectedId } = useAccentGradient();
@@ -140,7 +151,7 @@ export default function SectionProfile() {
         </Flex>
         <Flex alignItems="center" justifyContent="center">
           <SocialIconsModel
-            icons={socialLinks}
+            icons={iconsForSocial}
             direction={{ base: "row", xl: "column" }}
           />
         </Flex>
