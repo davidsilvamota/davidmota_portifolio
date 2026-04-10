@@ -8,6 +8,14 @@ const githubLogin = "davidsilvamota";
 export const githubUsername = 
   process.env.REACT_APP_GITHUB_USERNAME?.trim() || githubLogin;
 
+/** Linha do hero abaixo do nome; pode ser sobrescrita pelo gerador de portfólio. */
+export const defaultPortfolioHeroSubtitle =
+  "Desenvolvedor front-end · Web design · Foco em UX";
+
+/** Parágrafo longo do hero; pode ser sobrescrito pelo gerador de portfólio. */
+export const defaultPortfolioHeroAbout =
+  "Mais do que interfaces bonitas, eu construo experiências que funcionam. Sou desenvolvedor front-end com 4 anos de experiência, atuando também com web design para garantir produtos intuitivos, consistentes e bem pensados do início ao fim. Role e veja como eu transformo ideia em produto.";
+
 export const howIWorkItems = [
   "Entendo o problema e referências antes de definir interface ou código.",
   "Cuido de layout, hierarquia visual e consistência — também faço web design.",

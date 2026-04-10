@@ -1,5 +1,10 @@
 import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import {
+  SECTION_CONTENT_MAX_W,
+  SECTION_CONTENT_PY,
+  SECTION_TITLE_LINE_SIZE,
+} from "../../constants/sectionLayout";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { useAccentGradient } from "../theme/AccentGradientContext";
@@ -15,16 +20,17 @@ export default function SectionPortfolioBuilderPitch() {
   return (
     <Box
       as="section"
-      id="gerador-portfolio"
+      id="diferencial"
       w="100%"
-      maxW="980px"
+      maxW={SECTION_CONTENT_MAX_W}
       mx="auto"
-      py={{ base: 4, md: 6 }}
+      py={SECTION_CONTENT_PY}
+      scrollMarginTop={{ base: "88px", md: "96px" }}
     >
       <TextGradientModel fontSize={{ base: "2xl", md: "3xl" }}>
         Meu diferencial: UX + IA
       </TextGradientModel>
-      <LineGradientModel type="horizontal" size="170px" />
+      <LineGradientModel type="horizontal" size={SECTION_TITLE_LINE_SIZE} />
 
       <Box mt={6} p="1px" borderRadius="lg" bgGradient={accentGradient}>
         <Box

@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Icon,
+  IconButton,
   Link,
   Menu,
   MenuButton,
@@ -10,11 +11,12 @@ import {
   MenuList,
   Spinner,
   Text,
+  keyframes,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import * as React from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaChevronDown, FaGithub } from "react-icons/fa";
 import {
   ActivityCalendar,
   type Activity,
@@ -22,6 +24,32 @@ import {
 } from "react-activity-calendar";
 import "../../githubActivityTooltips.css";
 import { usePortfolioGitHubUser } from "../../context/PortfolioGitHubUserContext";
+import {
+  SECTION_CONTENT_MAX_W,
+  SECTION_CONTENT_PY,
+} from "../../constants/sectionLayout";
+
+const scrollCueJump = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  65% {
+    transform: translateY(8px);
+  }
+`;
+
+function scrollToDiferencial() {
+  document.getElementById("diferencial")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 const CONTRIBUTIONS_API =
   "https://github-contributions-api.jogruber.de/v4/" as const;
@@ -69,6 +97,8 @@ export default function SectionGitHubContributions() {
   const emptyHintBg = useColorModeValue("gray.50", "whiteAlpha.100");
   const emptyHintBorder = useColorModeValue("gray.200", "whiteAlpha.300");
   const githubLogoColor = useColorModeValue("gray.500", "whiteAlpha.700");
+  const scrollCueColor = useColorModeValue("gray.600", "whiteAlpha.800");
+  const scrollCueBtnHoverBg = useColorModeValue("gray.50", "whiteAlpha.100");
 
   const { portfolioGitHubLogin } = usePortfolioGitHubUser();
   const username = portfolioGitHubLogin.trim();
@@ -151,9 +181,9 @@ export default function SectionGitHubContributions() {
         as="section"
         id="contribuicoes"
         w="100%"
-        maxW="980px"
+        maxW={SECTION_CONTENT_MAX_W}
         mx="auto"
-        py={{ base: 4, md: 6 }}
+        py={SECTION_CONTENT_PY}
       >
         <Box
           bg={emptyHintBg}
@@ -183,9 +213,9 @@ export default function SectionGitHubContributions() {
       as="section"
       id="contribuicoes"
       w="100%"
-      maxW="980px"
+      maxW={SECTION_CONTENT_MAX_W}
       mx="auto"
-      py={{ base: 4, md: 6 }}
+      py={SECTION_CONTENT_PY}
     >
       <Box
         bg={cardBg}
@@ -315,6 +345,34 @@ export default function SectionGitHubContributions() {
         )}
 
       </Box>
+
+      <Flex justify="center" w="100%" mt={{ base: 5, md: 6 }}>
+        <IconButton
+          type="button"
+          aria-label="Rolar até a seção Diferencial"
+          icon={<FaChevronDown />}
+          variant="unstyled"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          size="lg"
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          borderWidth="1px"
+          borderColor={cardBorder}
+          bg={cardBg}
+          color={scrollCueColor}
+          _hover={{ bg: scrollCueBtnHoverBg }}
+          _focusVisible={{
+            outline: "2px solid",
+            outlineColor: "purple.400",
+            outlineOffset: "2px",
+          }}
+          animation={`${scrollCueJump} 1.35s ease-in-out infinite`}
+          onClick={scrollToDiferencial}
+        />
+      </Flex>
     </Box>
   );
 }

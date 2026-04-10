@@ -7,6 +7,11 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import {
+  SECTION_CONTENT_MAX_W,
+  SECTION_CONTENT_PY,
+  SECTION_TITLE_LINE_SIZE,
+} from "../../constants/sectionLayout";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { projects } from "../../data/siteContent";
@@ -37,14 +42,14 @@ export default function SectionProjects() {
       as="section"
       id="projetos"
       w="100%"
-      maxW="1100px"
+      maxW={SECTION_CONTENT_MAX_W}
       mx="auto"
-      py={{ base: 8, md: 12 }}
+      py={SECTION_CONTENT_PY}
     >
       <TextGradientModel fontSize={{ base: "2xl", md: "3xl" }}>
         Projetos
       </TextGradientModel>
-      <LineGradientModel type="horizontal" size="120px" />
+      <LineGradientModel type="horizontal" size={SECTION_TITLE_LINE_SIZE} />
       <Text mt={4} color={introColor} maxW="720px">
         Cada card é um espaço para um case real: contexto, stack e o que você
         decidiu em UX ou UI. Edite os dados em{" "}

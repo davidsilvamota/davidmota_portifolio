@@ -13,17 +13,42 @@ const getFallbackAvatar = (username: string) =>
 const GITHUB_USERS_API = "https://api.github.com/users/" as const;
 
 export default function SectionProfile() {
-  const { portfolioGitHubLogin } = usePortfolioGitHubUser();
+  const {
+    portfolioGitHubLogin,
+    portfolioHeroSubtitle,
+    portfolioHeroAbout,
+    portfolioLinkedIn,
+    portfolioWhatsApp,
+    portfolioAccentSwatchesHidden,
+  } = usePortfolioGitHubUser();
   const username = portfolioGitHubLogin.trim();
-  const iconsForSocial = React.useMemo(
-    () =>
-      socialLinks.map((link) =>
-        link.label === "GitHub" && username
-          ? { ...link, href: `https://github.com/${encodeURIComponent(username)}` }
-          : link,
-      ),
-    [username],
-  );
+  const iconsForSocial = React.useMemo(() => {
+    return socialLinks
+      .filter((link) => {
+        if (link.label === "LinkedIn" && portfolioLinkedIn.kind === "hidden") {
+          return false;
+        }
+        if (link.label === "WhatsApp" && portfolioWhatsApp.kind === "hidden") {
+          return false;
+        }
+        return true;
+      })
+      .map((link) => {
+        if (link.label === "GitHub" && username) {
+          return {
+            ...link,
+            href: `https://github.com/${encodeURIComponent(username)}`,
+          };
+        }
+        if (link.label === "LinkedIn" && portfolioLinkedIn.kind === "url") {
+          return { ...link, href: portfolioLinkedIn.href };
+        }
+        if (link.label === "WhatsApp" && portfolioWhatsApp.kind === "url") {
+          return { ...link, href: portfolioWhatsApp.href };
+        }
+        return link;
+      });
+  }, [username, portfolioLinkedIn, portfolioWhatsApp]);
   const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
   const [displayName, setDisplayName] = React.useState("David Mota");
   const { options, selectedId, setSelectedId } = useAccentGradient();
@@ -73,38 +98,40 @@ export default function SectionProfile() {
     >
       <Flex alignItems="center" flexDir="column" gap={4}>
         <ProfileAvatarModel src={avatarSrc} size={300} />
-        <Flex
-          w="100%"
-          justifyContent="center"
-          alignItems="center"
-          gap={2}
-          flexWrap="wrap"
-        >
-          {options.map((item) => {
-            const gradient = `linear(to-r, ${item.stops.join(", ")})`;
-            const isSelected = selectedId === item.id;
-            return (
-              <Tooltip key={item.id} label={item.name} hasArrow placement="top">
-                <Button
-                  onClick={() => setSelectedId(item.id)}
-                  aria-label={`Selecionar degrade ${item.name}`}
-                  size="xs"
-                  minW="16px"
-                  w="16px"
-                  h="16px"
-                  p={0}
-                  borderRadius="full"
-                  bgGradient={gradient}
-                  borderWidth={isSelected ? "2px" : "1px"}
-                  borderColor={isSelected ? swatchSelectedBorder : swatchBorder}
-                  _hover={{ opacity: 0.9 }}
-                >
-                  <Box w="100%" h="100%" />
-                </Button>
-              </Tooltip>
-            );
-          })}
-        </Flex>
+        {!portfolioAccentSwatchesHidden ? (
+          <Flex
+            w="100%"
+            justifyContent="center"
+            alignItems="center"
+            gap={2}
+            flexWrap="wrap"
+          >
+            {options.map((item) => {
+              const gradient = `linear(to-r, ${item.stops.join(", ")})`;
+              const isSelected = selectedId === item.id;
+              return (
+                <Tooltip key={item.id} label={item.name} hasArrow placement="top">
+                  <Button
+                    onClick={() => setSelectedId(item.id)}
+                    aria-label={`Selecionar degrade ${item.name}`}
+                    size="xs"
+                    minW="16px"
+                    w="16px"
+                    h="16px"
+                    p={0}
+                    borderRadius="full"
+                    bgGradient={gradient}
+                    borderWidth={isSelected ? "2px" : "1px"}
+                    borderColor={isSelected ? swatchSelectedBorder : swatchBorder}
+                    _hover={{ opacity: 0.9 }}
+                  >
+                    <Box w="100%" h="100%" />
+                  </Button>
+                </Tooltip>
+              );
+            })}
+          </Flex>
+        ) : null}
       </Flex>
       <Flex
         w={{ base: "100%", xl: "50%" }}
@@ -115,22 +142,10 @@ export default function SectionProfile() {
       >
         <TextGradientModel fontSize={"7xl"}>{displayName}</TextGradientModel>
         <TextGradientModel fontSize={"20px"} fontWeight={"normal"}>
-          Desenvolvedor front-end · Web design · Foco em UX
+          {portfolioHeroSubtitle}
         </TextGradientModel>
-        <Text mt={4} color={bodyTextColor}>
-          Há cerca de quatro anos construo interfaces no front-end — é o que eu
-          mais gosto de fazer. Também atuo com web design, então costumo cuidar
-          do desenho da experiência e da implementação: fluxos claros,
-          consistência visual e detalhes que fazem a interface fazer sentido
-          para quem usa. Se quiser ver como trabalho, role para{" "}
-          <Text as="span" fontWeight="semibold">
-            Como eu trabalho
-          </Text>{" "}
-          e{" "}
-          <Text as="span" fontWeight="semibold">
-            Projetos
-          </Text>
-          .
+        <Text mt={3} color={bodyTextColor} whiteSpace="pre-wrap" lineHeight="tall">
+          {portfolioHeroAbout}
         </Text>
       </Flex>
       <Flex
