@@ -5,12 +5,33 @@ import {
   SimpleGrid,
   Text,
   VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { projects } from "../../data/siteContent";
 
 export default function SectionProjects() {
+  const introColor = useColorModeValue("gray.600", "whiteAlpha.800");
+  const introStrong = useColorModeValue("gray.800", "whiteAlpha.900");
+  const cardBg = useColorModeValue("white", "whiteAlpha.50");
+  const cardBorder = useColorModeValue("gray.200", "whiteAlpha.200");
+  const titleColor = useColorModeValue("gray.800", "whiteAlpha.900");
+  const muted = useColorModeValue("gray.500", "whiteAlpha.600");
+  const tagBg = useColorModeValue("gray.100", "whiteAlpha.100");
+  const bodyMuted = useColorModeValue("gray.700", "whiteAlpha.800");
+  const outlineBorder = useColorModeValue("gray.400", "whiteAlpha.400");
+  const outlineColor = useColorModeValue("gray.800", "white");
+  const outlineHover = useColorModeValue(
+    { bg: "gray.100" },
+    { bg: "whiteAlpha.100" },
+  );
+  const ghostColor = useColorModeValue("gray.700", "whiteAlpha.800");
+  const ghostHover = useColorModeValue(
+    { bg: "gray.100", color: "gray.900" },
+    { bg: "whiteAlpha.100", color: "white" },
+  );
+
   return (
     <Box
       as="section"
@@ -24,10 +45,10 @@ export default function SectionProjects() {
         Projetos
       </TextGradientModel>
       <LineGradientModel type="horizontal" size="120px" />
-      <Text mt={4} color="whiteAlpha.800" maxW="720px">
+      <Text mt={4} color={introColor} maxW="720px">
         Cada card é um espaço para um case real: contexto, stack e o que você
         decidiu em UX ou UI. Edite os dados em{" "}
-        <Text as="span" fontWeight="semibold" color="whiteAlpha.900">
+        <Text as="span" fontWeight="semibold" color={introStrong}>
           src/data/siteContent.ts
         </Text>
         .
@@ -39,19 +60,19 @@ export default function SectionProjects() {
             direction="column"
             p={6}
             borderRadius="lg"
-            bg="whiteAlpha.50"
+            bg={cardBg}
             borderWidth="1px"
-            borderColor="whiteAlpha.200"
+            borderColor={cardBorder}
             backdropFilter="auto"
             backdropBlur="6px"
           >
             <VStack align="stretch" spacing={4} flex={1}>
               <TextGradientModel fontSize="xl">{project.title}</TextGradientModel>
-              <Text color="whiteAlpha.900" fontSize="sm">
+              <Text color={titleColor} fontSize="sm">
                 {project.description}
               </Text>
               <Box>
-                <Text fontSize="xs" color="whiteAlpha.600" mb={1}>
+                <Text fontSize="xs" color={muted} mb={1}>
                   Stack
                 </Text>
                 <Flex gap={2} flexWrap="wrap">
@@ -63,8 +84,8 @@ export default function SectionProjects() {
                       px={2}
                       py={1}
                       borderRadius="md"
-                      bg="whiteAlpha.100"
-                      color="whiteAlpha.900"
+                      bg={tagBg}
+                      color={titleColor}
                     >
                       {tag}
                     </Text>
@@ -72,10 +93,10 @@ export default function SectionProjects() {
                 </Flex>
               </Box>
               <Box>
-                <Text fontSize="xs" color="whiteAlpha.600" mb={1}>
+                <Text fontSize="xs" color={muted} mb={1}>
                   UX / UI
                 </Text>
-                <Text color="whiteAlpha.800" fontSize="sm">
+                <Text color={bodyMuted} fontSize="sm">
                   {project.uxNote}
                 </Text>
               </Box>
@@ -89,9 +110,9 @@ export default function SectionProjects() {
                   rel="noopener noreferrer"
                   size="sm"
                   variant="outline"
-                  borderColor="whiteAlpha.400"
-                  color="white"
-                  _hover={{ bg: "whiteAlpha.100" }}
+                  borderColor={outlineBorder}
+                  color={outlineColor}
+                  _hover={outlineHover}
                 >
                   Ver demo
                 </Button>
@@ -104,8 +125,8 @@ export default function SectionProjects() {
                   rel="noopener noreferrer"
                   size="sm"
                   variant="ghost"
-                  color="whiteAlpha.800"
-                  _hover={{ bg: "whiteAlpha.100", color: "white" }}
+                  color={ghostColor}
+                  _hover={ghostHover}
                 >
                   Código
                 </Button>

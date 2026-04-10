@@ -1,4 +1,10 @@
-import { Flex, Image, Link, type ResponsiveValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Image,
+  Link,
+  useColorModeValue,
+  type ResponsiveValue,
+} from "@chakra-ui/react";
 import { useAccentGradient } from "../theme/AccentGradientContext";
 
 export type SocialIconItem = {
@@ -13,6 +19,7 @@ export function SocialIconsModel(props: {
 }) {
   const dir = props.direction ?? "column";
   const { textGradient } = useAccentGradient();
+  const iconInnerBg = useColorModeValue("white", "blackAlpha.700");
   return (
     <Flex
       direction={dir}
@@ -30,7 +37,7 @@ export function SocialIconsModel(props: {
             _hover={{ transform: "scale(1.03)" }}
           >
             <Flex
-              bg="blackAlpha.700"
+              bg={iconInnerBg}
               borderRadius="full"
               boxSize="50px"
               align="center"

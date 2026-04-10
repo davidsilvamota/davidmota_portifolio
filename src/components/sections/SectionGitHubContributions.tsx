@@ -8,6 +8,8 @@ import {
   MenuList,
   Spinner,
   Text,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import * as React from "react";
 import {
@@ -21,8 +23,9 @@ import { githubUsername } from "../../data/siteContent";
 const CONTRIBUTIONS_API =
   "https://github-contributions-api.jogruber.de/v4/" as const;
 
-const gitHubTheme = {
-  light: ["#2d333b", "#0e4429", "#006d32", "#26a641", "#39d353"],
+const contributionTheme = {
+  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+  dark: ["#2d333b", "#0e4429", "#006d32", "#26a641", "#39d353"],
 } satisfies ThemeInput;
 
 type ApiOk = {
@@ -44,10 +47,29 @@ function isApiErr(body: unknown): body is ApiErr {
 }
 
 export default function SectionGitHubContributions() {
+  const { colorMode } = useColorMode();
+  const calendarScheme = colorMode === "dark" ? "dark" : "light";
+  const cardBg = useColorModeValue("white", "whiteAlpha.50");
+  const cardBorder = useColorModeValue("gray.200", "whiteAlpha.200");
+  const textPrimary = useColorModeValue("gray.800", "whiteAlpha.900");
+  const textSecondary = useColorModeValue("gray.600", "whiteAlpha.800");
+  const menuBtnBorder = useColorModeValue("gray.400", "whiteAlpha.400");
+  const menuBtnColor = useColorModeValue("gray.800", "white");
+  const menuBtnHover = useColorModeValue(
+    { bg: "gray.100" },
+    { bg: "whiteAlpha.100" },
+  );
+  const menuListBg = useColorModeValue("white", "gray.800");
+  const menuListBorder = useColorModeValue("gray.200", "whiteAlpha.300");
+  const menuItemSelected = useColorModeValue("gray.100", "whiteAlpha.200");
+  const menuItemHover = useColorModeValue("gray.100", "whiteAlpha.200");
+  const emptyHintBg = useColorModeValue("gray.50", "whiteAlpha.100");
+  const emptyHintBorder = useColorModeValue("gray.200", "whiteAlpha.300");
+
   const username = githubUsername.trim();
   const [allData, setAllData] = React.useState<Activity[] | null>(null);
   const [availableYears, setAvailableYears] = React.useState<number[]>([]);
-  const [selectedYear, setSelectedYear] = React.useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = React.useState<number | null>(2022);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -129,13 +151,13 @@ export default function SectionGitHubContributions() {
         py={{ base: 4, md: 6 }}
       >
         <Box
-          bg="whiteAlpha.100"
+          bg={emptyHintBg}
           borderWidth="1px"
-          borderColor="whiteAlpha.300"
+          borderColor={emptyHintBorder}
           borderRadius="md"
           p={6}
         >
-          <Text color="whiteAlpha.900" fontSize="sm">
+          <Text color={textPrimary} fontSize="sm">
             Para exibir o gráfico de contribuições do GitHub, defina{" "}
             <Text as="span" fontWeight="semibold">
               githubUsername
@@ -161,10 +183,10 @@ export default function SectionGitHubContributions() {
       py={{ base: 4, md: 6 }}
     >
       <Box
-        bg="whiteAlpha.50"
-        color="whiteAlpha.900"
+        bg={cardBg}
+        color={textPrimary}
         borderWidth="1px"
-        borderColor="whiteAlpha.200"
+        borderColor={cardBorder}
         borderRadius="md"
         p={{ base: 3, md: 4 }}
         backdropFilter="auto"
@@ -177,7 +199,7 @@ export default function SectionGitHubContributions() {
           flexDir={{ base: "column", sm: "row" }}
           mb={4}
         >
-          <Text fontSize="md" fontWeight="semibold" color="whiteAlpha.900">
+          <Text fontSize="md" fontWeight="semibold" color={textPrimary}>
             {loading
               ? "Carregando contribuições…"
               : error
@@ -191,9 +213,9 @@ export default function SectionGitHubContributions() {
               as={Button}
               size="sm"
               variant="outline"
-              borderColor="whiteAlpha.400"
-              color="white"
-              _hover={{ bg: "whiteAlpha.100" }}
+              borderColor={menuBtnBorder}
+              color={menuBtnColor}
+              _hover={menuBtnHover}
               fontWeight="normal"
               rightIcon={<span aria-hidden>▾</span>}
             >
@@ -201,16 +223,16 @@ export default function SectionGitHubContributions() {
             </MenuButton>
             <MenuList
               fontSize="sm"
-              bg="gray.800"
-              borderColor="whiteAlpha.300"
-              color="whiteAlpha.900"
+              bg={menuListBg}
+              borderColor={menuListBorder}
+              color={textPrimary}
             >
               {availableYears.map((year) => (
                 <MenuItem
                   key={year}
                   onClick={() => setSelectedYear(year)}
-                  bg={selectedYear === year ? "whiteAlpha.200" : "transparent"}
-                  _hover={{ bg: "whiteAlpha.200" }}
+                  bg={selectedYear === year ? menuItemSelected : "transparent"}
+                  _hover={{ bg: menuItemHover }}
                 >
                   {year}
                 </MenuItem>
@@ -230,15 +252,15 @@ export default function SectionGitHubContributions() {
                 <Spinner color="green.500" />
               </Flex>
             ) : !hasData ? (
-              <Text color="whiteAlpha.800" fontSize="sm">
+              <Text color={textSecondary} fontSize="sm">
                 Sem dados de contribuições para exibir no período.
               </Text>
             ) : (
               <ActivityCalendar
                 data={data!}
                 loading={loading}
-                theme={gitHubTheme}
-                colorScheme="light"
+                theme={contributionTheme}
+                colorScheme={calendarScheme}
                 blockSize={12}
                 blockMargin={3}
                 blockRadius={2}

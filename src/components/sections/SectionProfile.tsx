@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Tooltip, useColorModeValue } from "@chakra-ui/react";
 import * as React from "react";
 import { ProfileAvatarModel } from "../atoms/ProfileAvatarModel";
 import TextGradientModel from "../atoms/TextGradientModel.1";
@@ -16,6 +16,9 @@ export default function SectionProfile() {
   const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
   const [displayName, setDisplayName] = React.useState("David Mota");
   const { options, selectedId, setSelectedId } = useAccentGradient();
+  const bodyTextColor = useColorModeValue("gray.700", "white");
+  const swatchSelectedBorder = useColorModeValue("gray.800", "white");
+  const swatchBorder = useColorModeValue("gray.400", "whiteAlpha.500");
 
   React.useEffect(() => {
     const fallbackAvatarSrc = getFallbackAvatar(username);
@@ -82,7 +85,7 @@ export default function SectionProfile() {
                   borderRadius="full"
                   bgGradient={gradient}
                   borderWidth={isSelected ? "2px" : "1px"}
-                  borderColor={isSelected ? "white" : "whiteAlpha.500"}
+                  borderColor={isSelected ? swatchSelectedBorder : swatchBorder}
                   _hover={{ opacity: 0.9 }}
                 >
                   <Box w="100%" h="100%" />
@@ -103,7 +106,7 @@ export default function SectionProfile() {
         <TextGradientModel fontSize={"20px"} fontWeight={"normal"}>
           Desenvolvedor front-end · Web design · Foco em UX
         </TextGradientModel>
-        <Text mt={4} color={"white"}>
+        <Text mt={4} color={bodyTextColor}>
           Há cerca de quatro anos construo interfaces no front-end — é o que eu
           mais gosto de fazer. Também atuo com web design, então costumo cuidar
           do desenho da experiência e da implementação: fluxos claros,

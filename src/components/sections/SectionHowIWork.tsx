@@ -1,9 +1,11 @@
-import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, ListItem, UnorderedList, useColorModeValue } from "@chakra-ui/react";
 import TextGradientModel from "../atoms/TextGradientModel.1";
 import { LineGradientModel } from "../atoms/LineGradientModel";
 import { howIWorkItems } from "../../data/siteContent";
 
 export default function SectionHowIWork() {
+  const listColor = useColorModeValue("gray.700", "whiteAlpha.900");
+
   return (
     <Box
       as="section"
@@ -20,7 +22,7 @@ export default function SectionHowIWork() {
       <UnorderedList
         mt={6}
         spacing={4}
-        color="whiteAlpha.900"
+        color={listColor}
         pl={4}
         styleType="disc"
       >

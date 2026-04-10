@@ -1,6 +1,7 @@
-import { Flex, Link } from "@chakra-ui/react";
+import { Flex, Link, useColorModeValue } from "@chakra-ui/react";
 import * as React from "react";
 import { colors } from "../theme/Theme";
+import { ThemeModeToggle } from "./ThemeModeToggle";
 
 const navItems = [
   { href: "#inicio", label: "Início" },
@@ -11,6 +12,8 @@ const navItems = [
 export default function ContainerScreenModel(props: {
   children: React.ReactNode;
 }) {
+  const bgGradient = useColorModeValue(colors.bgGradientLight, colors.bgGradient);
+
   return (
     <>
       <Header />
@@ -19,9 +22,10 @@ export default function ContainerScreenModel(props: {
         pt={{ base: 20, md: "4%" }}
         pl={8}
         pr={8}
-        bgGradient={colors.bgGradient}
+        bgGradient={bgGradient}
         flexDir="column"
         alignItems="stretch"
+        transition="background 0.25s ease"
       >
         {props.children}
       </Flex>
@@ -30,6 +34,14 @@ export default function ContainerScreenModel(props: {
 }
 
 function Header() {
+  const headerBg = useColorModeValue("whiteAlpha.800", "blackAlpha.400");
+  const borderColor = useColorModeValue("blackAlpha.100", "whiteAlpha.100");
+  const linkColor = useColorModeValue("gray.800", "whiteAlpha.900");
+  const linkHover = useColorModeValue(
+    { color: "gray.600", textDecoration: "none", opacity: 0.9 },
+    { color: "white", textDecoration: "none", opacity: 0.85 },
+  );
+
   return (
     <Flex
       top={0}
@@ -37,23 +49,26 @@ function Header() {
       right={0}
       position="fixed"
       zIndex={1}
-      bg="blackAlpha.400"
-      backdropFilter="blur(8px)"
+      bg={headerBg}
+      backdropFilter="blur(10px)"
+      borderBottomWidth="1px"
+      borderColor={borderColor}
       px={{ base: 4, md: 8 }}
       py={4}
       justifyContent="flex-end"
       alignItems="center"
       flexWrap="wrap"
-      gap={4}
+      gap={{ base: 3, md: 5 }}
     >
+      <ThemeModeToggle />
       {navItems.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          color="whiteAlpha.900"
+          color={linkColor}
           fontSize="sm"
           fontWeight="medium"
-          _hover={{ color: "white", textDecoration: "none", opacity: 0.85 }}
+          _hover={linkHover}
         >
           {item.label}
         </Link>
