@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -12,6 +14,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import * as React from "react";
+import { FaGithub } from "react-icons/fa";
 import {
   ActivityCalendar,
   type Activity,
@@ -65,6 +68,7 @@ export default function SectionGitHubContributions() {
   const menuItemHover = useColorModeValue("gray.100", "whiteAlpha.200");
   const emptyHintBg = useColorModeValue("gray.50", "whiteAlpha.100");
   const emptyHintBorder = useColorModeValue("gray.200", "whiteAlpha.300");
+  const githubLogoColor = useColorModeValue("gray.500", "whiteAlpha.700");
 
   const username = githubUsername.trim();
   const [allData, setAllData] = React.useState<Activity[] | null>(null);
@@ -256,37 +260,55 @@ export default function SectionGitHubContributions() {
                 Sem dados de contribuições para exibir no período.
               </Text>
             ) : (
-              <ActivityCalendar
-                data={data!}
-                loading={loading}
-                theme={contributionTheme}
-                colorScheme={calendarScheme}
-                blockSize={12}
-                blockMargin={3}
-                blockRadius={2}
-                fontSize={12}
-                maxLevel={4}
-                weekStart={0}
-                showWeekdayLabels={["mon", "wed", "fri"]}
-                showTotalCount={false}
-                labels={{
-                  months: [
-                    "jan",
-                    "fev",
-                    "mar",
-                    "abr",
-                    "mai",
-                    "jun",
-                    "jul",
-                    "ago",
-                    "set",
-                    "out",
-                    "nov",
-                    "dez",
-                  ],
-                  legend: { less: "Menos", more: "Mais" },
-                }}
-              />
+              <Flex
+                align="center"
+                justify="space-between"
+                gap={{ base: 3, md: 4 }}
+                w="100%"
+              >
+                <ActivityCalendar
+                  data={data!}
+                  loading={loading}
+                  theme={contributionTheme}
+                  colorScheme={calendarScheme}
+                  blockSize={12}
+                  blockMargin={3}
+                  blockRadius={2}
+                  fontSize={12}
+                  maxLevel={4}
+                  weekStart={0}
+                  showWeekdayLabels={["mon", "wed", "fri"]}
+                  showTotalCount={false}
+                  labels={{
+                    months: [
+                      "jan",
+                      "fev",
+                      "mar",
+                      "abr",
+                      "mai",
+                      "jun",
+                      "jul",
+                      "ago",
+                      "set",
+                      "out",
+                      "nov",
+                      "dez",
+                    ],
+                    legend: { less: "Menos", more: "Mais" },
+                  }}
+                />
+                <Flex flex={1} alignItems={"center"} justifyContent={"center"}>
+                <Link
+                  href={`https://github.com/${encodeURIComponent(username)}`}
+                  isExternal
+                  color={githubLogoColor}
+                  _hover={{ color: textPrimary }}
+                  aria-label="Abrir perfil no GitHub"
+                >
+                  <Icon as={FaGithub} boxSize={10} />
+                </Link>
+                </Flex>
+              </Flex>
             )}
           </Box>
         )}
