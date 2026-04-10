@@ -64,6 +64,14 @@ export type SocialLink = {
 /** Preencha com seus perfis; sem href o ícone aparece sem link. */
 export const socialLinks: SocialLink[] = [
   { icon: iconGithub, label: "GitHub", href: "" },
-  { icon: iconLinkedin, label: "LinkedIn", href: "" },
-  { icon: iconWhatsapp, label: "WhatsApp", href: "" },
+  {
+    icon: iconLinkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/david-mota-79b01a215/",
+  },
+  {
+    icon: iconWhatsapp,
+    label: "WhatsApp",
+    href: "https://wa.me/5531971360313",
+  },
 ];

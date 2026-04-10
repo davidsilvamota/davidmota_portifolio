@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Text, Tooltip, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Spinner,
+  Text,
+  Tooltip,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import * as React from "react";
 import { ProfileAvatarModel } from "../atoms/ProfileAvatarModel";
 import TextGradientModel from "../atoms/TextGradientModel.1";
@@ -51,6 +59,12 @@ export default function SectionProfile() {
   }, [username, portfolioLinkedIn, portfolioWhatsApp]);
   const [avatarSrc, setAvatarSrc] = React.useState(getFallbackAvatar(username));
   const [displayName, setDisplayName] = React.useState("David Mota");
+  const [fetchingGithubProfile, setFetchingGithubProfile] = React.useState(
+    () => username.length > 0,
+  );
+  const [avatarImageReady, setAvatarImageReady] = React.useState(
+    () => username.length === 0,
+  );
   const { options, selectedId, setSelectedId } = useAccentGradient();
   const bodyTextColor = useColorModeValue("gray.700", "white");
   const swatchSelectedBorder = useColorModeValue("gray.800", "white");
@@ -60,10 +74,13 @@ export default function SectionProfile() {
     const fallbackAvatarSrc = getFallbackAvatar(username);
     const fallbackName = username || "David Mota";
     if (!username) {
+      setFetchingGithubProfile(false);
+      setAvatarImageReady(true);
       setAvatarSrc(fallbackAvatarSrc);
       setDisplayName("David Mota");
       return;
     }
+    setFetchingGithubProfile(true);
     const ac = new AbortController();
     fetch(`${GITHUB_USERS_API}${encodeURIComponent(username)}`, {
       signal: ac.signal,
@@ -79,9 +96,25 @@ export default function SectionProfile() {
           setAvatarSrc(fallbackAvatarSrc);
           setDisplayName(fallbackName);
         }
+      })
+      .finally(() => {
+        if (!ac.signal.aborted) {
+          setFetchingGithubProfile(false);
+        }
       });
     return () => ac.abort();
   }, [username]);
+
+  React.useEffect(() => {
+    if (!username) {
+      setAvatarImageReady(true);
+      return;
+    }
+    setAvatarImageReady(false);
+  }, [avatarSrc, username]);
+
+  const showAvatarLoading =
+    username.length > 0 && (fetchingGithubProfile || !avatarImageReady);
 
   return (
     <Flex
@@ -97,7 +130,31 @@ export default function SectionProfile() {
       py={{ base: 6, md: 8 }}
     >
       <Flex alignItems="center" flexDir="column" gap={4}>
-        <ProfileAvatarModel src={avatarSrc} size={300} />
+        <Box position="relative" display="inline-flex" borderRadius="full">
+          <ProfileAvatarModel
+            src={avatarSrc}
+            size={300}
+            onAvatarImageSettled={() => setAvatarImageReady(true)}
+          />
+          {showAvatarLoading ? (
+            <Flex
+              position="absolute"
+              inset={0}
+              align="center"
+              justify="center"
+              borderRadius="full"
+              bg="blackAlpha.600"
+            >
+              <Spinner
+                color="white"
+                thickness="3px"
+                speed="0.8s"
+                emptyColor="whiteAlpha.400"
+                size="xl"
+              />
+            </Flex>
+          ) : null}
+        </Box>
         {!portfolioAccentSwatchesHidden ? (
           <Flex
             w="100%"

@@ -2,7 +2,7 @@ import * as React from "react";
 import {
   defaultPortfolioHeroAbout,
   defaultPortfolioHeroSubtitle,
-  githubUsername as defaultGithubUsername,
+  githubUsername,
 } from "../data/siteContent";
 
 /** Rede social: herda siteContent, some do portfólio, ou URL fixa (gerador). */
@@ -25,6 +25,11 @@ type PortfolioGitHubUserContextValue = {
   /** Após aplicar o gerador com cor escolhida, esconde os swatches abaixo da foto no perfil. */
   portfolioAccentSwatchesHidden: boolean;
   setPortfolioAccentSwatchesHidden: (hidden: boolean) => void;
+  /** Após concluir o gerador: home mostra só o hero até o usuário voltar ao portfólio completo. */
+  portfolioGeneratorPreviewOnly: boolean;
+  setPortfolioGeneratorPreviewOnly: (previewOnly: boolean) => void;
+  /** Restaura texto, GitHub, redes e opções visuais aos padrões de siteContent (fim do “teste” do gerador). */
+  resetPortfolioToSiteDefaults: () => void;
 };
 
 const PortfolioGitHubUserContext =
@@ -36,7 +41,7 @@ export function PortfolioGitHubUserProvider(props: {
   children: React.ReactNode;
 }) {
   const [portfolioGitHubLogin, setPortfolioGitHubLoginState] = React.useState(
-    () => defaultGithubUsername.trim(),
+    () => githubUsername.trim(),
   );
   const [portfolioHeroSubtitle, setPortfolioHeroSubtitleState] = React.useState(
     () => defaultPortfolioHeroSubtitle,
@@ -50,6 +55,10 @@ export function PortfolioGitHubUserProvider(props: {
     React.useState<PortfolioSocialOverride>(defaultSocial);
   const [portfolioAccentSwatchesHidden, setPortfolioAccentSwatchesHiddenState] =
     React.useState(false);
+  const [
+    portfolioGeneratorPreviewOnly,
+    setPortfolioGeneratorPreviewOnlyState,
+  ] = React.useState(false);
 
   const setPortfolioGitHubLogin = React.useCallback((login: string) => {
     setPortfolioGitHubLoginState(login.trim());
@@ -90,6 +99,23 @@ export function PortfolioGitHubUserProvider(props: {
     [],
   );
 
+  const setPortfolioGeneratorPreviewOnly = React.useCallback(
+    (previewOnly: boolean) => {
+      setPortfolioGeneratorPreviewOnlyState(previewOnly);
+    },
+    [],
+  );
+
+  const resetPortfolioToSiteDefaults = React.useCallback(() => {
+    setPortfolioGitHubLoginState(githubUsername.trim());
+    setPortfolioHeroSubtitleState(defaultPortfolioHeroSubtitle);
+    setPortfolioHeroAboutState(defaultPortfolioHeroAbout);
+    setPortfolioLinkedInState(defaultSocial);
+    setPortfolioWhatsAppState(defaultSocial);
+    setPortfolioAccentSwatchesHiddenState(false);
+    setPortfolioGeneratorPreviewOnlyState(false);
+  }, []);
+
   const value = React.useMemo(
     () => ({
       portfolioGitHubLogin,
@@ -104,6 +130,9 @@ export function PortfolioGitHubUserProvider(props: {
       setPortfolioWhatsApp,
       portfolioAccentSwatchesHidden,
       setPortfolioAccentSwatchesHidden,
+      portfolioGeneratorPreviewOnly,
+      setPortfolioGeneratorPreviewOnly,
+      resetPortfolioToSiteDefaults,
     }),
     [
       portfolioGitHubLogin,
@@ -118,6 +147,9 @@ export function PortfolioGitHubUserProvider(props: {
       setPortfolioWhatsApp,
       portfolioAccentSwatchesHidden,
       setPortfolioAccentSwatchesHidden,
+      portfolioGeneratorPreviewOnly,
+      setPortfolioGeneratorPreviewOnly,
+      resetPortfolioToSiteDefaults,
     ],
   );
 

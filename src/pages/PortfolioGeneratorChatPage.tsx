@@ -108,6 +108,7 @@ export default function PortfolioGeneratorChatPage() {
     setPortfolioLinkedIn,
     setPortfolioWhatsApp,
     setPortfolioAccentSwatchesHidden,
+    setPortfolioGeneratorPreviewOnly,
   } = usePortfolioGitHubUser();
   const { selected, selectedId, options, setSelectedId } = useAccentGradient();
   const accentGradient = `linear(to-r, ${selected.stops.join(", ")})`;
@@ -437,6 +438,7 @@ export default function PortfolioGeneratorChatPage() {
 
     setSelectedId(pendingAccentId);
     setPortfolioAccentSwatchesHidden(true);
+    setPortfolioGeneratorPreviewOnly(true);
     accentIdBeforePickStepRef.current = null;
 
     setBotTyping(true);
