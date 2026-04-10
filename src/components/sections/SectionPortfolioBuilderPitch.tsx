@@ -1,0 +1,61 @@
+import { Box, Button, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import TextGradientModel from "../atoms/TextGradientModel.1";
+import { LineGradientModel } from "../atoms/LineGradientModel";
+import { useAccentGradient } from "../theme/AccentGradientContext";
+
+export default function SectionPortfolioBuilderPitch() {
+  const { selected } = useAccentGradient();
+  const accentGradient = `linear(to-r, ${selected.stops.join(", ")})`;
+  const cardBg = useColorModeValue("white", "gray.900");
+  const textColor = useColorModeValue("gray.700", "whiteAlpha.900");
+  const buttonText = useColorModeValue("gray.800", "whiteAlpha.900");
+
+  return (
+    <Box
+      as="section"
+      id="gerador-portfolio"
+      w="100%"
+      maxW="980px"
+      mx="auto"
+      py={{ base: 4, md: 6 }}
+    >
+      <TextGradientModel fontSize={{ base: "2xl", md: "3xl" }}>
+        Meu diferencial: UX + IA
+      </TextGradientModel>
+      <LineGradientModel type="horizontal" size="170px" />
+
+      <Box mt={6} p="1px" borderRadius="lg" bgGradient={accentGradient}>
+        <Box
+          bg={cardBg}
+          borderRadius="lg"
+          p={{ base: 4, md: 6 }}
+          backdropFilter="auto"
+          backdropBlur="6px"
+        >
+          <Text color={textColor} lineHeight="tall">
+            Olá, muito prazer! Sou David Mota, desenvolvedor front-end com forte foco em experiência
+            do usuário e construção de interfaces modernas. Este projeto vai
+            além de um portfólio tradicional: ele demonstra minha capacidade de
+            transformar ideias em produtos reais, utilizando boas práticas de
+            desenvolvimento e recursos de inteligência artificial. Hoje, ele
+            representa a base de um gerador de portfólios — mostrando não apenas
+            o que sei fazer, mas como penso como desenvolvedor.
+          </Text>
+
+          <Flex mt={5} justify="center">
+            <Box p="1px" borderRadius="md" bgGradient={accentGradient}>
+              <Button
+                size="md"
+                bg={cardBg}
+                color={buttonText}
+                _hover={{ opacity: 0.92 }}
+              >
+                Teste agora
+              </Button>
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
+    </Box>
+  );
+}

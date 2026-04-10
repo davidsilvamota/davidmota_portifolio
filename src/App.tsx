@@ -4,6 +4,7 @@ import { appTheme } from "./chakra-theme";
 import ContainerScreenModel from "./components/atoms/ContainerScreenModel";
 import SectionProfile from "./components/sections/SectionProfile";
 import SectionGitHubContributions from "./components/sections/SectionGitHubContributions";
+import SectionPortfolioBuilderPitch from "./components/sections/SectionPortfolioBuilderPitch";
 import SectionHowIWork from "./components/sections/SectionHowIWork";
 import SectionProjects from "./components/sections/SectionProjects";
 import { AccentGradientProvider } from "./components/theme/AccentGradientContext";
@@ -21,6 +22,7 @@ export const App = () => (
         >
           <SectionProfile />
           <SectionGitHubContributions />
+          <SectionPortfolioBuilderPitch />
           <SectionHowIWork />
           <SectionProjects />
         </Flex>
