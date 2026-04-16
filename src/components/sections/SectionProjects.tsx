@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   SimpleGrid,
   Text,
   VStack,
@@ -18,7 +19,6 @@ import { projects } from "../../data/siteContent";
 
 export default function SectionProjects() {
   const introColor = useColorModeValue("gray.600", "whiteAlpha.800");
-  const introStrong = useColorModeValue("gray.800", "whiteAlpha.900");
   const cardBg = useColorModeValue("white", "whiteAlpha.50");
   const cardBorder = useColorModeValue("gray.200", "whiteAlpha.200");
   const titleColor = useColorModeValue("gray.800", "whiteAlpha.900");
@@ -36,6 +36,9 @@ export default function SectionProjects() {
     { bg: "gray.100", color: "gray.900" },
     { bg: "whiteAlpha.100", color: "white" },
   );
+  const featuredImageBg = useColorModeValue("gray.50", "blackAlpha.400");
+  const featuredProject = projects.find((project) => project.isFeatured);
+  const regularProjects = projects.filter((project) => !project.isFeatured);
 
   return (
     <Box
@@ -51,15 +54,141 @@ export default function SectionProjects() {
       </TextGradientModel>
       <LineGradientModel type="horizontal" size={SECTION_TITLE_LINE_SIZE} />
       <Text mt={4} color={introColor} maxW="720px">
-        Cada card é um espaço para um case real: contexto, stack e o que você
-        decidiu em UX ou UI. Edite os dados em{" "}
-        <Text as="span" fontWeight="semibold" color={introStrong}>
-          src/data/siteContent.ts
-        </Text>
-        .
+        Projetos com foco em problema, implementação e impacto para o usuário.
+        Cada case destaca decisões técnicas e de experiência que geraram valor
+        real no produto.
       </Text>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={10}>
-        {projects.map((project) => (
+      {featuredProject ? (
+        <Flex
+          mt={10}
+          direction="column"
+          p={{ base: 5, md: 7 }}
+          borderRadius="xl"
+          bg={cardBg}
+          borderWidth="1px"
+          borderColor={cardBorder}
+          backdropFilter="auto"
+          backdropBlur="6px"
+          gap={5}
+        >
+          <VStack align="stretch" spacing={4}>
+            <TextGradientModel fontSize={{ base: "xl", md: "2xl" }}>
+              {featuredProject.title}
+            </TextGradientModel>
+            <Text color={titleColor} fontSize={{ base: "sm", md: "md" }}>
+              {featuredProject.description}
+            </Text>
+            <Box>
+              <Text fontSize="xs" color={muted} mb={1}>
+                Stack
+              </Text>
+              <Flex gap={2} flexWrap="wrap">
+                {featuredProject.stack.map((tag) => (
+                  <Text
+                    key={tag}
+                    as="span"
+                    fontSize="xs"
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    bg={tagBg}
+                    color={titleColor}
+                  >
+                    {tag}
+                  </Text>
+                ))}
+              </Flex>
+            </Box>
+            <Box>
+              <Text fontSize="xs" color={muted} mb={1}>
+                Entrega e impacto
+              </Text>
+              <Text color={bodyMuted} fontSize="sm">
+                {featuredProject.uxNote}
+              </Text>
+            </Box>
+          </VStack>
+          {featuredProject.screenshots?.length ? (
+            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={4}>
+              {featuredProject.screenshots.map((screen, idx) => (
+                <Box
+                  key={`${featuredProject.title}-screen-${idx}`}
+                  borderRadius="lg"
+                  overflow="hidden"
+                  borderWidth="1px"
+                  borderColor={cardBorder}
+                  bg={featuredImageBg}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  py={{ base: 3, md: 4 }}
+                  px={2}
+                  minH={{ base: "200px", md: "300px" }}
+                >
+                  <Image
+                    src={screen}
+                    alt={`Tela ${idx + 1} do projeto ${featuredProject.title}`}
+                    w="100%"
+                    maxW="100%"
+                    maxH={{ base: "min(50vh, 360px)", md: "420px" }}
+                    h="auto"
+                    objectFit="contain"
+                  />
+                </Box>
+              ))}
+            </SimpleGrid>
+          ) : null}
+          <Flex gap={3} flexWrap="wrap">
+            {featuredProject.liveUrl ? (
+              <Button
+                as="a"
+                href={featuredProject.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="sm"
+                variant="outline"
+                borderColor={outlineBorder}
+                color={outlineColor}
+                _hover={outlineHover}
+              >
+                Site oficial
+              </Button>
+            ) : null}
+            {featuredProject.playStoreUrl ? (
+              <Button
+                as="a"
+                href={featuredProject.playStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="sm"
+                variant="outline"
+                borderColor={outlineBorder}
+                color={outlineColor}
+                _hover={outlineHover}
+              >
+                Google Play
+              </Button>
+            ) : null}
+            {featuredProject.repoUrl ? (
+              <Button
+                as="a"
+                href={featuredProject.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="sm"
+                variant="ghost"
+                color={ghostColor}
+                _hover={ghostHover}
+              >
+                Código
+              </Button>
+            ) : null}
+          </Flex>
+        </Flex>
+      ) : null}
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mt={6}>
+        {regularProjects.map((project) => (
           <Flex
             key={project.title}
             direction="column"
@@ -99,7 +228,7 @@ export default function SectionProjects() {
               </Box>
               <Box>
                 <Text fontSize="xs" color={muted} mb={1}>
-                  UX / UI
+                  Entrega e impacto
                 </Text>
                 <Text color={bodyMuted} fontSize="sm">
                   {project.uxNote}

@@ -28,7 +28,7 @@ export default function SectionPortfolioBuilderPitch() {
       scrollMarginTop={{ base: "88px", md: "96px" }}
     >
       <TextGradientModel fontSize={{ base: "2xl", md: "3xl" }}>
-        Meu diferencial: UX + IA
+        Diferencial: Entrega com IA
       </TextGradientModel>
       <LineGradientModel type="horizontal" size={SECTION_TITLE_LINE_SIZE} />
 
@@ -41,16 +41,10 @@ export default function SectionPortfolioBuilderPitch() {
           backdropBlur="6px"
         >
           <Text color={textColor} lineHeight="tall">
-            Olá, muito prazer! Sou David Mota, desenvolvedor front-end com forte foco em experiência
-            do usuário e construção de interfaces modernas. Este projeto vai
-            além de um portfólio tradicional: ele demonstra minha capacidade de
-            transformar ideias em produtos reais, utilizando boas práticas de
-            desenvolvimento e recursos de inteligência artificial. Aqui, o uso
-            de um agente de IA é parte central da experiência: ele analisa dados
-            públicos do GitHub e do LinkedIn para sugerir descrições e
-            configurações personalizadas de forma contextual. Hoje, este projeto
-            representa a base de um gerador de portfólios — mostrando não apenas
-            o que sei fazer, mas como penso e implemento soluções como desenvolvedor.
+            Este gerador mostra como aplico IA no desenvolvimento: do contexto
+            técnico à experiência final. A partir de dados públicos do GitHub e
+            LinkedIn, o agente sugere conteúdo e configurações de forma guiada,
+            acelerando decisões sem perder qualidade de entrega.
           </Text>
 
           <Flex mt={5} justify="center">
@@ -62,7 +56,7 @@ export default function SectionPortfolioBuilderPitch() {
                 _hover={{ opacity: 0.92 }}
                 onClick={() => navigate("/gerador")}
               >
-                Teste agora
+                Abrir gerador com IA
               </Button>
             </Box>
           </Flex>
