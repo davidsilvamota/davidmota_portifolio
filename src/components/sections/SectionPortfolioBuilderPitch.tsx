@@ -45,9 +45,12 @@ export default function SectionPortfolioBuilderPitch() {
             do usuário e construção de interfaces modernas. Este projeto vai
             além de um portfólio tradicional: ele demonstra minha capacidade de
             transformar ideias em produtos reais, utilizando boas práticas de
-            desenvolvimento e recursos de inteligência artificial. Hoje, ele
+            desenvolvimento e recursos de inteligência artificial. Aqui, o uso
+            de um agente de IA é parte central da experiência: ele analisa dados
+            públicos do GitHub e do LinkedIn para sugerir descrições e
+            configurações personalizadas de forma contextual. Hoje, este projeto
             representa a base de um gerador de portfólios — mostrando não apenas
-            o que sei fazer, mas como penso como desenvolvedor.
+            o que sei fazer, mas como penso e implemento soluções como desenvolvedor.
           </Text>
 
           <Flex mt={5} justify="center">

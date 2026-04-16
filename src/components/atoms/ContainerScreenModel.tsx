@@ -19,9 +19,9 @@ export default function ContainerScreenModel(props: {
       <Header />
       <Flex
         minH={"100vh"}
-        pt={{ base: 20, md: "4%" }}
-        pl={8}
-        pr={8}
+        pt={{ base: "88px", sm: "96px", md: "4%" }}
+        pl={{ base: 4, md: 8 }}
+        pr={{ base: 4, md: 8 }}
         bgGradient={bgGradient}
         flexDir="column"
         alignItems="stretch"
@@ -55,24 +55,34 @@ function Header() {
       borderColor={borderColor}
       px={{ base: 4, md: 8 }}
       py={4}
-      justifyContent="flex-end"
+      justifyContent="space-between"
       alignItems="center"
-      flexWrap="wrap"
-      gap={{ base: 3, md: 5 }}
+      gap={3}
     >
-      <ThemeModeToggle />
-      {navItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          color={linkColor}
-          fontSize="sm"
-          fontWeight="medium"
-          _hover={linkHover}
-        >
-          {item.label}
-        </Link>
-      ))}
+      <Flex
+        align="center"
+        justify="flex-start"
+        flexWrap="wrap"
+        gap={{ base: 3, sm: 4, md: 5 }}
+        flex="1"
+        minW={0}
+      >
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            color={linkColor}
+            fontSize="sm"
+            fontWeight="medium"
+            _hover={linkHover}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </Flex>
+      <Flex flexShrink={0} align="center">
+        <ThemeModeToggle />
+      </Flex>
     </Flex>
   );
 }

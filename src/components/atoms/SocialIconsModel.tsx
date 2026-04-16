@@ -25,12 +25,12 @@ export function SocialIconsModel(props: {
       direction={dir}
       align="center"
       justify="center"
-      gap={{ base: 4, xl: 6 }}
+      gap={{ base: 2, sm: 2.5, md: 3, xl: 4 }}
     >
       {props.icons.map((item) => {
         const image = (
           <Flex
-            p="2px"
+            p="1.5px"
             borderRadius="full"
             bgGradient={textGradient}
             transition="transform 0.2s ease"
@@ -39,12 +39,12 @@ export function SocialIconsModel(props: {
             <Flex
               bg={iconInnerBg}
               borderRadius="full"
-              boxSize="50px"
+              boxSize={{ base: "34px", sm: "38px", md: "42px", xl: "46px" }}
               align="center"
               justify="center"
             >
               <Image
-                boxSize="34px"
+                boxSize={{ base: "22px", sm: "24px", md: "26px", xl: "28px" }}
                 objectFit="contain"
                 src={item.icon}
                 alt={item.label}

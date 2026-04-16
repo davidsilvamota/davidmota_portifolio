@@ -61,9 +61,7 @@ export function HomePageContent() {
             backdropBlur="6px"
           >
             <Text fontSize="sm" color={bannerText} flex="1" minW={{ base: "100%", md: "200px" }}>
-              Isto é só uma demonstração do gerador: você vê o hero e o calendário de
-              contribuições como no teste. Para continuar vendo meu portfólio completo
-              (diferencial, como trabalho, projetos e conteúdo original),{" "}
+              "Este é um teste do gerador de portfólio. Para ver o portfólio completo,{" "}
               <Text as="span" fontWeight="semibold">
                 clique no botão
               </Text>

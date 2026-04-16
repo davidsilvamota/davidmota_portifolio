@@ -5,6 +5,7 @@ import {
   Spinner,
   Text,
   Tooltip,
+  useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import * as React from "react";
@@ -116,24 +117,42 @@ export default function SectionProfile() {
   const showAvatarLoading =
     username.length > 0 && (fetchingGithubProfile || !avatarImageReady);
 
+  const avatarPx =
+    useBreakpointValue({
+      base: 120,
+      sm: 132,
+      md: 152,
+      lg: 176,
+      xl: 196,
+      "2xl": 216,
+    }) ?? 128;
+
+  const spinnerSize = useBreakpointValue<"sm" | "md" | "lg" | "xl">({
+    base: "sm",
+    sm: "md",
+    md: "md",
+    lg: "lg",
+    xl: "xl",
+  }) ?? "sm";
+
   return (
     <Flex
       as="section"
       id="inicio"
       w="100%"
-      maxW="1200px"
+      maxW={{ base: "100%", xl: "1100px" }}
       mx="auto"
-      alignItems="center"
+      alignItems={{ base: "stretch", xl: "center" }}
       justifyContent="space-between"
       flexDir={{ base: "column", xl: "row" }}
-      gap={{ base: 10, xl: 6 }}
-      py={{ base: 6, md: 8 }}
+      gap={{ base: 4, sm: 5, xl: 6 }}
+      py={{ base: 3, sm: 4, md: 5 }}
     >
-      <Flex alignItems="center" flexDir="column" gap={4}>
+      <Flex alignItems="center" flexDir="column" gap={{ base: 2, md: 3 }} flexShrink={0}>
         <Box position="relative" display="inline-flex" borderRadius="full">
           <ProfileAvatarModel
             src={avatarSrc}
-            size={300}
+            size={avatarPx}
             onAvatarImageSettled={() => setAvatarImageReady(true)}
           />
           {showAvatarLoading ? (
@@ -150,7 +169,7 @@ export default function SectionProfile() {
                 thickness="3px"
                 speed="0.8s"
                 emptyColor="whiteAlpha.400"
-                size="xl"
+                size={spinnerSize}
               />
             </Flex>
           ) : null}
@@ -191,26 +210,52 @@ export default function SectionProfile() {
         ) : null}
       </Flex>
       <Flex
-        w={{ base: "100%", xl: "50%" }}
-        mr={{ base: 0, xl: 10 }}
-        ml={{ base: 0, xl: 10 }}
+        w={{ base: "100%", xl: "auto" }}
+        minW={0}
+        flex={{ base: "none", xl: "1" }}
+        mr={{ base: 0, xl: 6 }}
+        ml={{ base: 0, xl: 6 }}
         flexDir="column"
         textAlign={{ base: "center", xl: "left" }}
       >
-        <TextGradientModel fontSize={"7xl"}>{displayName}</TextGradientModel>
-        <TextGradientModel fontSize={"20px"} fontWeight={"normal"}>
+        <TextGradientModel
+          fontSize={{
+            base: "xl",
+            sm: "2xl",
+            md: "3xl",
+            lg: "4xl",
+            xl: "4xl",
+            "2xl": "5xl",
+          }}
+          fontWeight="bold"
+        >
+          {displayName}
+        </TextGradientModel>
+        <TextGradientModel
+          fontSize={{ base: "xs", sm: "sm", md: "md" }}
+          fontWeight="normal"
+        >
           {portfolioHeroSubtitle}
         </TextGradientModel>
-        <Text mt={3} color={bodyTextColor} whiteSpace="pre-wrap" lineHeight="tall">
+        <Text
+          mt={{ base: 2, md: 3 }}
+          fontSize={{ base: "sm", md: "md" }}
+          lineHeight={{ base: "short", md: "tall" }}
+          color={bodyTextColor}
+          whiteSpace="pre-wrap"
+          maxW={{ base: "100%", xl: "52rem" }}
+        >
           {portfolioHeroAbout}
         </Text>
       </Flex>
       <Flex
         flexDir="row"
-        alignItems="stretch"
+        alignItems="center"
         justifyContent="center"
-        gap={{ base: 6, xl: 8 }}
+        gap={{ base: 4, xl: 8 }}
         w={{ base: "100%", xl: "auto" }}
+        flexShrink={0}
+        pt={{ base: 0, xl: 0 }}
       >
         <Flex
           display={{ base: "none", xl: "flex" }}
